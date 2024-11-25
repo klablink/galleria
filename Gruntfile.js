@@ -59,8 +59,24 @@ module.exports = function (grunt) {
                     dest: 'dist'
                 }]
             }
-        }
+        },
 
+        postcss: {
+            options: {
+                map: {
+                    inline: false, // save all sourcemaps as separate files...
+                    annotation: 'dist/css/maps/' // ...to the specified directory
+                },
+
+                processors: [
+                    require('autoprefixer')(),
+                    require('cssnano')() // minify the result
+                ]
+            },
+            dist: {
+                src: 'css/*.css'
+            }
+        }
     });
 
     var themes = ['azur', 'folio', 'fullscreen', 'miniml', 'twelve', 'classic'];
@@ -124,7 +140,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-postcss');
+    grunt.loadNpmTasks('@lodder/grunt-postcss');
 
     // Default task(s).
     grunt.registerTask('default', ['clean', 'replace', 'uglify', 'postcss', 'cssmin', 'copy']);
